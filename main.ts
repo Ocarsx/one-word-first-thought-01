@@ -15,11 +15,12 @@ function main(): void {
   mkdirSync(outDir, { recursive: true });
 
   // Gate self-check: exactly one word, 1-24 chars, no whitespace at all.
-  if (!/^[^\s]+$/.test(WORD)) {
-    throw new Error("entry must be exactly one word");
-  }
-  if (WORD.length < 1 || WORD.length > 24) {
-    throw new Error(`entry length ${WORD.length} outside gate 1-24`);
+  // Both conditions are enforced in one check so a word can only pass
+  // when it satisfies the full competition gate at once.
+  if (WORD.length < 1 || WORD.length > 24 || !/^[^\s]+$/.test(WORD)) {
+    throw new Error(
+      `entry must be exactly one word of 1-24 characters (got ${WORD.length} chars)`,
+    );
   }
 
   // Write the word and nothing else — no trailing newline.
